@@ -41,15 +41,15 @@ export function LoginForm() {
       <div className="w-full max-w-md rounded-3xl border border-ppm-border bg-white p-8 shadow-md">
         <div className="flex flex-col items-center text-center">
           <Image
-            src="/logo-ppm.png"
-            alt="Logo PPM Roudlotul Jannah"
+            src="/logo-sd.png"
+            alt="Logo Sekolah Dasar"
             width={90}
             height={90}
             className="h-24 w-24 object-contain"
           />
-          <p className="mt-4 font-semibold text-ppm-gold-dark">Presensi Santri</p>
+          <p className="mt-4 font-semibold text-ppm-gold-dark">Presensi Siswa</p>
           <h1 className="font-display text-2xl font-extrabold text-ppm-green">
-            PPM ROUDLOTUL JANNAH
+            SEKOLAH DASAR
           </h1>
         </div>
 

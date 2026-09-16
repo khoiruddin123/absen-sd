@@ -5,17 +5,17 @@ export function ScanHeader() {
     <header className="border-b border-ppm-border bg-white px-4 py-4">
       <div className="mx-auto flex max-w-xl items-center gap-3">
         <Image
-          src="/logo-ppm.png"
-          alt="Logo PPM Roudlotul Jannah"
+          src="/logo-sd.png"
+          alt="Logo Sekolah Dasar"
           width={44}
           height={44}
           className="h-11 w-11 object-contain"
         />
         <div className="leading-tight">
           <p className="font-display text-lg font-extrabold text-ppm-green">
-            PPM ROUDLOTUL JANNAH
+            SEKOLAH DASAR
           </p>
-          <p className="text-xs font-semibold text-ppm-gold-dark">Presensi Santri</p>
+          <p className="text-xs font-semibold text-ppm-gold-dark">Presensi Siswa</p>
         </div>
       </div>
     </header>

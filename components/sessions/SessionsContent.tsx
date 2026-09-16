@@ -1,11 +1,10 @@
 "use client";
 
 import useSWR from "swr";
-import { useEffect, useMemo, useState } from "react";
-import { Card, Field, Input, Select, Button } from "@/components/ui/Basics";
+import { useEffect, useState } from "react";
+import { Card, Field, Input, Button } from "@/components/ui/Basics";
 import { LoadingState, ErrorState, EmptyState } from "@/components/ui/States";
 import { useToast } from "@/components/ui/Toast";
-import { SessionDefaultsEditor } from "@/components/sessions/SessionDefaultsEditor";
 import { formatDateIndonesian } from "@/lib/timezone";
 
 const fetcher = (url: string) => fetch(url).then((r) => r.json());
@@ -17,55 +16,39 @@ function todayWIBString() {
 
 export function SessionsContent() {
   const { showToast } = useToast();
-  const { data: ref, isLoading: refLoading, mutate: mutateRef } = useSWR("/api/reference", fetcher);
+  const { data: ref, isLoading: refLoading } = useSWR("/api/reference", fetcher);
   const { data: sessionsData, isLoading: sessionsLoading, mutate } = useSWR(
     "/api/sessions",
     fetcher
   );
 
   const [date, setDate] = useState(todayWIBString());
-  const [sessionType, setSessionType] = useState<"subuh" | "malam">("subuh");
+  const [sessionType, setSessionType] = useState("");
   const [scanStart, setScanStart] = useState("");
   const [onTimeUntil, setOnTimeUntil] = useState("");
   const [endTime, setEndTime] = useState("");
-  const [selectedGroups, setSelectedGroups] = useState<Set<string>>(new Set());
+  const [selectedGroupId, setSelectedGroupId] = useState<string>("");
   const [submitting, setSubmitting] = useState(false);
   const [formError, setFormError] = useState<string | null>(null);
 
-  const settingsByType = useMemo(() => {
-    const map = new Map<string, any>();
-    for (const s of ref?.sessionSettings ?? []) map.set(s.session_type, s);
-    return map;
-  }, [ref]);
-
   useEffect(() => {
-    const s = settingsByType.get(sessionType);
-    if (s) {
-      setScanStart(s.scan_start_time?.slice(0, 5) ?? "");
-      setOnTimeUntil(s.on_time_until?.slice(0, 5) ?? "");
-      setEndTime(s.end_time?.slice(0, 5) ?? "");
+    if (ref?.groups && ref.groups.length > 0 && !selectedGroupId) {
+      setSelectedGroupId(ref.groups[0].id);
     }
-  }, [sessionType, settingsByType]);
-
-  useEffect(() => {
-    if (ref?.groups) {
-      setSelectedGroups(new Set(ref.groups.map((g: any) => g.id)));
-    }
-  }, [ref]);
-
-  function toggleGroup(id: string) {
-    setSelectedGroups((prev) => {
-      const next = new Set(prev);
-      if (next.has(id)) next.delete(id);
-      else next.add(id);
-      return next;
-    });
-  }
+  }, [ref, selectedGroupId]);
 
   async function handleCreateSession() {
     setFormError(null);
-    if (selectedGroups.size === 0) {
-      setFormError("Pilih minimal satu kelompok yang mengaji.");
+    if (!sessionType.trim()) {
+      setFormError("Nama mata pelajaran wajib diisi.");
+      return;
+    }
+    if (!scanStart || !onTimeUntil || !endTime) {
+      setFormError("Waktu mulai scan, batas tepat waktu, dan waktu selesai wajib diisi.");
+      return;
+    }
+    if (!selectedGroupId) {
+      setFormError("Pilih kelas terlebih dahulu.");
       return;
     }
     setSubmitting(true);
@@ -75,11 +58,11 @@ export function SessionsContent() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           sessionDate: date,
-          sessionType,
+          sessionType: sessionType.trim(),
           scanStartTime: scanStart,
           onTimeUntil,
           endTime,
-          groupIds: Array.from(selectedGroups),
+          groupIds: [selectedGroupId],
         }),
       });
       const result = await res.json();
@@ -87,7 +70,8 @@ export function SessionsContent() {
         setFormError(result.message ?? "Gagal membuka sesi.");
         return;
       }
-      showToast("Sesi presensi berhasil dibuka.");
+      showToast("Sesi presensi pelajaran berhasil dibuka.");
+      setSessionType("");
       mutate();
     } catch {
       setFormError("Gagal terhubung ke server. Periksa koneksi internet dan coba lagi.");
@@ -139,25 +123,24 @@ export function SessionsContent() {
     <div className="mx-auto flex max-w-5xl flex-col gap-6">
       <div>
         <p className="text-sm font-semibold text-ppm-gold-dark">Presensi</p>
-        <h1 className="font-display text-2xl font-extrabold text-gray-800">Buka Sesi Presensi</h1>
+        <h1 className="font-display text-2xl font-extrabold text-gray-800">Buka Sesi Presensi Pelajaran</h1>
       </div>
-
-      <SessionDefaultsEditor sessionSettings={ref?.sessionSettings ?? []} onSaved={() => mutateRef()} />
 
       <Card className="p-5">
         {refLoading ? (
           <LoadingState />
         ) : (
-          <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-5">
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-5">
               <Field label="Tanggal">
                 <Input type="date" value={date} onChange={(e) => setDate(e.target.value)} />
               </Field>
-              <Field label="Jenis Sesi">
-                <Select value={sessionType} onChange={(e) => setSessionType(e.target.value as any)}>
-                  <option value="subuh">Subuh</option>
-                  <option value="malam">Malam</option>
-                </Select>
+              <Field label="Jadwal Mata Pelajaran">
+                <Input
+                  placeholder="Ketik Mapel (contoh: Matematika)"
+                  value={sessionType}
+                  onChange={(e) => setSessionType(e.target.value)}
+                />
               </Field>
               <Field label="Mulai Scan">
                 <Input type="time" value={scanStart} onChange={(e) => setScanStart(e.target.value)} />
@@ -176,27 +159,31 @@ export function SessionsContent() {
 
             <div>
               <p className="mb-2 text-sm font-semibold text-ppm-gold-dark">
-                Kelompok yang Mengaji
+                Pilih Kelas Pelajaran
               </p>
-              <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
-                {(ref?.groups ?? []).map((g: any) => (
-                  <label
-                    key={g.id}
-                    className={`flex cursor-pointer items-center gap-2 rounded-lg border px-3 py-2 text-sm font-medium ${
-                      selectedGroups.has(g.id)
-                        ? "border-ppm-green bg-ppm-green/10 text-ppm-green-dark"
-                        : "border-ppm-border text-gray-500"
-                    }`}
-                  >
-                    <input
-                      type="checkbox"
-                      className="accent-[--ppm-green]"
-                      checked={selectedGroups.has(g.id)}
-                      onChange={() => toggleGroup(g.id)}
-                    />
-                    {g.name}
-                  </label>
-                ))}
+              <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
+                {(ref?.groups ?? []).map((g: any) => {
+                  const isSelected = selectedGroupId === g.id;
+                  return (
+                    <button
+                      key={g.id}
+                      type="button"
+                      onClick={() => setSelectedGroupId(g.id)}
+                      className={`relative flex items-center justify-center rounded-xl border py-3 px-4 text-sm font-bold transition-all ${
+                        isSelected
+                          ? "border-sky-600 bg-sky-50 text-sky-800 shadow-sm ring-2 ring-sky-500/20"
+                          : "border-gray-200 bg-white text-gray-700 hover:border-sky-300 hover:bg-sky-50/50"
+                      }`}
+                    >
+                      {g.name}
+                      {isSelected && (
+                        <span className="absolute right-2 top-2 flex h-4 w-4 items-center justify-center rounded-full bg-sky-600 text-[10px] text-white">
+                          ✓
+                        </span>
+                      )}
+                    </button>
+                  );
+                })}
               </div>
             </div>
 
@@ -230,8 +217,7 @@ export function SessionsContent() {
               <div className="flex flex-wrap items-center justify-between gap-2">
                 <div>
                   <p className="font-semibold text-gray-800">
-                    {formatDateIndonesian(s.session_date)} &middot;{" "}
-                    {s.session_type === "subuh" ? "Subuh" : "Malam"}
+                    {formatDateIndonesian(s.session_date)} &middot; {s.session_type}
                   </p>
                   <p className="text-xs text-gray-500">
                     Scan {s.scan_start_time?.slice(0, 5)} &bull; Tepat waktu s/d{" "}

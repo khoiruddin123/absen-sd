@@ -71,14 +71,14 @@ export function OperatorsContent() {
         <p className="text-sm font-semibold text-ppm-gold-dark">Presensi</p>
         <h1 className="font-display text-2xl font-extrabold text-gray-800">Petugas Presensi</h1>
         <p className="mt-1 text-sm text-gray-500">
-          Santri yang terdaftar di sini dapat login sebagai petugas di halaman Scan QR untuk
+          Siswa yang terdaftar di sini dapat login sebagai petugas di halaman Scan QR untuk
           mengabsen teman sekelasnya.
         </p>
       </div>
 
       <Card className="p-5">
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-          <Field label="NIS Santri">
+          <Field label="NIS Siswa">
             <Input value={nis} onChange={(e) => setNis(e.target.value)} placeholder="Masukkan NIS" />
           </Field>
           <Field label="Kelompok yang Ditugaskan">
@@ -125,7 +125,7 @@ export function OperatorsContent() {
                     {o.student_name}
                     {!o.student_active && (
                       <span className="ml-2 rounded bg-gray-200 px-1.5 py-0.5 text-[10px] text-gray-600">
-                        santri nonaktif
+                        siswa nonaktif
                       </span>
                     )}
                   </td>

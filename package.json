@@ -1,5 +1,5 @@
 {
-  "name": "absensi-ppm",
+  "name": "apsen-sd",
   "version": "0.1.0",
   "private": true,
   "main": "server.js",
@@ -10,7 +10,6 @@
     "lint": "eslint"
   },
   "dependencies": {
-    "@supabase/supabase-js": "^2.112.3",
     "date-fns": "^4.4.0",
     "date-fns-tz": "^3.2.0",
     "html5-qrcode": "^2.3.8",

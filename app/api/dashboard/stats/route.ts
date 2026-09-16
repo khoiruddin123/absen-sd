@@ -46,7 +46,7 @@ export async function GET() {
       ok: true,
       today: todayStr,
       activeSessionLabel: activeSession
-        ? `Sesi ${activeSession.session_type === "subuh" ? "Subuh" : "Malam"} sedang berlangsung`
+        ? `Sesi Pelajaran "${activeSession.session_type}" sedang berlangsung`
         : null,
       stats,
     });

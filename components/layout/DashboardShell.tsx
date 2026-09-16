@@ -7,8 +7,8 @@ import { useState } from "react";
 
 const NAV_ITEMS = [
   { href: "/dashboard", label: "Dashboard" },
-  { href: "/sessions", label: "Buka Sesi" },
-  { href: "/students", label: "Data Santri" },
+  { href: "/students", label: "Data Siswa" },
+  { href: "/sessions", label: "Buka Sesi Presensi" },
   { href: "/attendance", label: "Detail Presensi" },
   { href: "/recap", label: "Rekap Presensi" },
   { href: "/operators", label: "Petugas Presensi" },
@@ -18,17 +18,17 @@ function BrandMark() {
   return (
     <div className="flex items-center gap-3">
       <Image
-        src="/logo-ppm.png"
-        alt="Logo PPM Roudlotul Jannah"
+        src="/logo-sd.png"
+        alt="Logo Sekolah Dasar"
         width={44}
         height={44}
         className="h-11 w-11 object-contain"
       />
       <div className="leading-tight">
         <p className="font-display text-lg font-extrabold text-ppm-green">
-          PPM ROUDLOTUL JANNAH
+          SEKOLAH DASAR
         </p>
-        <p className="text-xs font-semibold text-ppm-gold-dark">Presensi Santri</p>
+        <p className="text-xs font-semibold text-ppm-gold-dark">Presensi Siswa</p>
       </div>
     </div>
   );
@@ -59,11 +59,10 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
               <Link
                 key={item.href}
                 href={item.href}
-                className={`rounded-lg px-3 py-2 text-sm font-semibold transition-colors ${
-                  active
-                    ? "bg-ppm-green text-white"
-                    : "text-gray-600 hover:bg-ppm-cream hover:text-ppm-green-dark"
-                }`}
+                className={`rounded-lg px-3 py-2 text-sm font-semibold transition-colors ${active
+                  ? "bg-ppm-green text-white"
+                  : "text-gray-600 hover:bg-ppm-cream hover:text-ppm-green-dark"
+                  }`}
               >
                 {item.label}
               </Link>
@@ -91,7 +90,7 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
               <path
                 d="M4 6h16M4 12h16M4 18h16"
-                stroke="#0e9d54"
+                stroke="#dc2626"
                 strokeWidth="2"
                 strokeLinecap="round"
               />
@@ -121,11 +120,10 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
                       key={item.href}
                       href={item.href}
                       onClick={() => setMobileOpen(false)}
-                      className={`rounded-lg px-3 py-2 text-sm font-semibold transition-colors ${
-                        active
-                          ? "bg-ppm-green text-white"
-                          : "text-gray-600 hover:bg-ppm-cream hover:text-ppm-green-dark"
-                      }`}
+                      className={`rounded-lg px-3 py-2 text-sm font-semibold transition-colors ${active
+                        ? "bg-ppm-green text-white"
+                        : "text-gray-600 hover:bg-ppm-cream hover:text-ppm-green-dark"
+                        }`}
                     >
                       {item.label}
                     </Link>

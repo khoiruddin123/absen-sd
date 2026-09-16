@@ -87,7 +87,7 @@ export function AttendanceContent() {
       <div>
         <p className="text-sm font-semibold text-ppm-gold-dark">Presensi</p>
         <h1 className="font-display text-2xl font-extrabold text-gray-800">
-          Santri PPM Roudlotul Jannah
+          Siswa Sekolah Dasar
         </h1>
       </div>
 
@@ -150,7 +150,7 @@ export function AttendanceContent() {
                 {data.rows.length === 0 && (
                   <tr>
                     <td colSpan={data.sessions.length + 1} className="py-10 text-gray-400">
-                      Tidak ada santri pada filter ini.
+                      Tidak ada siswa pada filter ini.
                     </td>
                   </tr>
                 )}

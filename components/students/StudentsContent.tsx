@@ -61,7 +61,7 @@ export function StudentsContent() {
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
           <p className="text-sm font-semibold text-ppm-gold-dark">Data Master</p>
-          <h1 className="font-display text-2xl font-extrabold text-gray-800">Data Santri</h1>
+          <h1 className="font-display text-2xl font-extrabold text-gray-800">Data Siswa</h1>
         </div>
         <div className="flex gap-2">
           <input
@@ -75,7 +75,7 @@ export function StudentsContent() {
             {importing ? "Mengimpor..." : "Import Excel/CSV"}
           </Button>
           <Button variant="gold" onClick={() => setShowAddForm((v) => !v)}>
-            {showAddForm ? "Tutup Form" : "+ Tambah Santri"}
+            {showAddForm ? "Tutup Form" : "+ Tambah Siswa"}
           </Button>
         </div>
       </div>
@@ -128,9 +128,9 @@ export function StudentsContent() {
 
       <Card className="overflow-hidden">
         {isLoading && <LoadingState />}
-        {data && !data.ok && <ErrorState message="Gagal memuat data santri." />}
+        {data && !data.ok && <ErrorState message="Gagal memuat data siswa." />}
         {data?.ok && data.students.length === 0 && (
-          <EmptyState title="Tidak ada santri ditemukan" />
+          <EmptyState title="Tidak ada siswa ditemukan" />
         )}
         {data?.ok && data.students.length > 0 && (
           <div className="scroll-thin overflow-x-auto">
@@ -196,10 +196,10 @@ function AddStudentForm({ classes, onCreated }: { classes: any[]; onCreated: () 
       });
       const result = await res.json();
       if (!result.ok) {
-        setError(result.message ?? "Gagal menambahkan santri.");
+        setError(result.message ?? "Gagal menambahkan siswa.");
         return;
       }
-      showToast("Santri berhasil ditambahkan.");
+      showToast("Siswa berhasil ditambahkan.");
       setNis("");
       setName("");
       setGeneration("");
@@ -243,7 +243,7 @@ function AddStudentForm({ classes, onCreated }: { classes: any[]; onCreated: () 
       {error && <p className="mt-3 text-sm font-medium text-red-600">{error}</p>}
       <div className="mt-4">
         <Button onClick={handleSubmit} disabled={submitting}>
-          {submitting ? "Menyimpan..." : "Simpan Santri"}
+          {submitting ? "Menyimpan..." : "Simpan Siswa"}
         </Button>
       </div>
     </Card>
@@ -287,7 +287,7 @@ function StudentRow({
         showToast(result.message ?? "Gagal menyimpan perubahan.", "error");
         return;
       }
-      showToast("Data santri diperbarui.");
+      showToast("Data siswa diperbarui.");
       onSaved();
     } catch {
       showToast("Gagal terhubung ke server.", "error");
@@ -308,7 +308,7 @@ function StudentRow({
         showToast(result.message ?? "Gagal memperbarui status.", "error");
         return;
       }
-      showToast(student.active ? "Santri dinonaktifkan." : "Santri diaktifkan kembali.");
+      showToast(student.active ? "Siswa dinonaktifkan." : "Siswa diaktifkan kembali.");
       onSaved();
     } catch {
       showToast("Gagal terhubung ke server.", "error");
@@ -317,7 +317,7 @@ function StudentRow({
 
   async function handleDelete() {
     const confirmed = window.confirm(
-      `Hapus santri ${student.name} (${student.nis})? Data presensi dan riwayat kelas terkait akan ikut terhapus.`
+      `Hapus siswa ${student.name} (${student.nis})? Data presensi dan riwayat kelas terkait akan ikut terhapus.`
     );
     if (!confirmed) return;
 
@@ -327,10 +327,10 @@ function StudentRow({
       });
       const result = await res.json();
       if (!result.ok) {
-        showToast(result.message ?? "Gagal menghapus santri.", "error");
+        showToast(result.message ?? "Gagal menghapus siswa.", "error");
         return;
       }
-      showToast("Santri berhasil dihapus.");
+      showToast("Siswa berhasil dihapus.");
       onDeleted();
     } catch {
       showToast("Gagal terhubung ke server.", "error");

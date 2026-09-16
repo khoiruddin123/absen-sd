@@ -1,21 +1,21 @@
 @import "tailwindcss";
 
 :root {
-  --background: #f1fff7;
-  --foreground: #1c2b22;
+  --background: #f0f9ff;
+  --foreground: #0f172a;
 
-  --ppm-green: #0e9d54;
-  --ppm-green-dark: #0a7a41;
-  --ppm-green-darker: #075c31;
-  --ppm-gold: #c99a2e;
-  --ppm-gold-dark: #a87c1f;
-  --ppm-cream: #fff9e6;
-  --ppm-border: #e3c988;
+  --ppm-green: #0284c7; /* Biru Tut Wuri Handayani */
+  --ppm-green-dark: #0369a1;
+  --ppm-green-darker: #075985;
+  --ppm-gold: #dc2626; /* Merah SD Accent */
+  --ppm-gold-dark: #b91c1c;
+  --ppm-cream: #e0f2fe;
+  --ppm-border: #bae6fd;
 
   --status-hadir: #16a34a;
-  --status-terlambat: #a1662f;
-  --status-izin: #d4a017;
-  --status-sakit: #2094c9;
+  --status-terlambat: #d97706;
+  --status-izin: #0284c7;
+  --status-sakit: #2563eb;
   --status-alpa: #dc2626;
 }
 

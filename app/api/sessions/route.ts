@@ -32,7 +32,7 @@ export async function POST(request: NextRequest) {
     }
     if (!Array.isArray(groupIds) || groupIds.length === 0) {
       return NextResponse.json(
-        { ok: false, message: "Pilih minimal satu kelompok yang mengaji." },
+        { ok: false, message: "Pilih minimal satu kelas/kelompok siswa." },
         { status: 400 }
       );
     }

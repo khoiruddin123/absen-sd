@@ -115,7 +115,7 @@ export async function getScannerSessionState(): Promise<ScannerSessionState> {
 
   if (sessions.length === 0) return { state: "none" };
 
-  const label = (t: string) => (t === "subuh" ? "Subuh" : "Malam");
+  const label = (t: string) => t;
 
   for (const s of sessions) {
     const start = wibDateTimeToUTC(todayStr, s.scan_start_time);
@@ -218,13 +218,13 @@ export async function scanAttendance(params: {
   );
 
   if (studentRows.length === 0) {
-    return { ok: false, message: "Santri tidak ditemukan." };
+    return { ok: false, message: "Siswa tidak ditemukan." };
   }
   const student = studentRows[0];
   if (!student.active) {
     return {
       ok: false,
-      message: "Santri sudah tidak aktif dan tidak dapat melakukan presensi.",
+      message: "Siswa sudah tidak aktif dan tidak dapat melakukan presensi.",
     };
   }
 
@@ -258,7 +258,7 @@ export async function scanAttendance(params: {
 
   const group = await getStudentGroupOnDate(student.id, todayStr);
   if (!group) {
-    return { ok: false, message: "Data kelas santri tidak valid. Hubungi admin." };
+    return { ok: false, message: "Data kelas siswa tidak valid. Hubungi admin." };
   }
 
   const [sessionGroupRows] = await pool.query<RowDataPacket[]>(
@@ -268,7 +268,7 @@ export async function scanAttendance(params: {
 
   const sessionGroup = sessionGroupRows[0];
   if (!sessionGroup || !sessionGroup.opened || sessionGroup.closed_manually) {
-    return { ok: false, message: "Kelas santri tidak sedang dibuka untuk sesi ini." };
+    return { ok: false, message: "Kelas siswa tidak sedang dibuka untuk sesi ini." };
   }
 
   const onTimeUntil = wibDateTimeToUTC(todayStr, activeSession.on_time_until);
@@ -323,7 +323,7 @@ export async function editAttendanceStatus(params: {
   const sessionDateStr = typeof session.session_date === 'string' ? session.session_date : session.session_date.toISOString().split("T")[0];
 
   const group = await getStudentGroupOnDate(params.studentId, sessionDateStr);
-  if (!group) return { ok: false, message: "Data kelas santri tidak valid." };
+  if (!group) return { ok: false, message: "Data kelas siswa tidak valid." };
 
   const [sessionGroupRows] = await pool.query<RowDataPacket[]>(
     `SELECT id, opened FROM session_groups WHERE session_id = ? AND group_id = ? LIMIT 1`,
@@ -333,7 +333,7 @@ export async function editAttendanceStatus(params: {
   if (sessionGroupRows.length === 0 || !sessionGroupRows[0].opened) {
     return {
       ok: false,
-      message: "Kelompok santri ini tidak dibuka pada sesi tersebut, status tidak dapat diedit.",
+      message: "Kelompok siswa ini tidak dibuka pada sesi tersebut, status tidak dapat diedit.",
     };
   }
 

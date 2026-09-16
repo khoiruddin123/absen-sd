@@ -97,7 +97,7 @@ function OperatorGate({ onLoggedIn }: { onLoggedIn: (info: OperatorInfo) => void
         Masukkan NIS Petugas Presensi
       </h1>
       <p className="mt-2 text-sm text-gray-500">
-        Hanya santri yang terdaftar sebagai petugas presensi yang dapat mengakses fitur scan.
+        Hanya siswa yang terdaftar sebagai petugas presensi yang dapat mengakses fitur scan.
       </p>
       <form onSubmit={handleSubmit} className="mt-5 flex flex-col gap-3">
         <Input
@@ -237,7 +237,7 @@ function ScannerGate({
 
       {canScan && (
         <>
-          <p className="mt-6 text-center text-sm text-gray-500">Arahkan kamera ke QR Code santri</p>
+          <p className="mt-6 text-center text-sm text-gray-500">Arahkan kamera ke QR Code siswa</p>
           <div className="relative mt-3">
             <QrCamera onDecode={handleDecode} paused={paused} />
             {banner && (
@@ -259,14 +259,14 @@ function ScannerGate({
                 onClick={() => setManualOpen(true)}
                 className="w-full rounded-lg border border-ppm-border bg-white px-4 py-3 text-sm text-gray-500"
               >
-                Atau ketik NIS santri manual di sini
+                Atau ketik NIS siswa manual di sini
               </button>
             ) : (
               <form onSubmit={handleManualSubmit} className="flex gap-2">
                 <Input
                   value={manualNis}
                   onChange={(e) => setManualNis(e.target.value)}
-                  placeholder="Masukkan NIS santri"
+                  placeholder="Masukkan NIS siswa"
                   inputMode="numeric"
                   autoFocus
                   className="flex-1"

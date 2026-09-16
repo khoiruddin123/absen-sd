@@ -1,6 +1,6 @@
-# Absensi PPM Roudlotul Jannah
+# Apsen SD
 
-Aplikasi presensi santri berbasis web untuk mengelola sesi presensi, scan QR code, validasi petugas, rekap kehadiran, serta riwayat siswa dan sesi. Project ini dibangun dengan Next.js dan Supabase.
+Aplikasi presensi santri berbasis web untuk mengelola sesi presensi, scan QR code, validasi petugas, rekap kehadiran, serta riwayat siswa dan sesi. Project ini dibangun dengan Next.js dan MySQL.
 
 ## Fitur Utama
 
@@ -17,10 +17,10 @@ Aplikasi presensi santri berbasis web untuk mengelola sesi presensi, scan QR cod
 
 ## Tech Stack
 
-- Next.js 16
+- Next.js 16+ (App Router)
 - React 19
 - TypeScript
-- Supabase
+- MySQL (mysql2)
 - Tailwind CSS
 - SWR
 - html5-qrcode
@@ -32,9 +32,9 @@ Aplikasi presensi santri berbasis web untuk mengelola sesi presensi, scan QR cod
 .
 ├── app/                  # Route dan halaman aplikasi Next.js
 ├── components/           # Komponen UI frontend
-├── lib/                  # Service, helper, autentikasi, dan integrasi Supabase
+├── database/             # Skema Database (MySQL)
+├── lib/                  # Service, helper, autentikasi, dan koneksi database MySQL
 ├── public/               # Asset publik
-├── supabase/             # Migration database
 ├── types/                # Type definitions
 ├── .env.example          # Contoh environment variables
 ├── next.config.ts
@@ -49,15 +49,8 @@ Pastikan perangkat Anda sudah memiliki:
 
 - Node.js 20+
 - npm
-- Akun Supabase
+- MySQL Server (misalnya via XAMPP)
 - Browser modern
-
-## Clone Repository
-
-```bash
-git clone <url-repository-anda>
-cd absensi-ppm-roudlotul-jannah
-```
 
 ## Instalasi
 
@@ -65,22 +58,22 @@ cd absensi-ppm-roudlotul-jannah
 npm install
 ```
 
-## Konfigurasi Environment
+## Konfigurasi Environment & Database
 
-Buat file `.env.local` di root project, lalu isi konfigurasi berikut:
+1. Buat database di MySQL (misalnya via phpMyAdmin) dengan nama **`apsensd`**.
+2. Import file `database/schema.sql` ke dalam database `apsensd` tersebut.
+3. Buat file `.env` di root project dengan menyalin dari `.env.example`, lalu isi konfigurasi berikut:
 
 ```env
-NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
-SUPABASE_SECRET_KEY=your_supabase_service_role_key
+DB_HOST=localhost
+DB_USER=root
+DB_PASSWORD=
+DB_NAME=apsensd
+
 AUTH_SECRET=generate_random_secret_here
 ADMIN_USERNAME=admin
 ADMIN_PASSWORD=password_anda
 ```
-
-Catatan:
-- `AUTH_SECRET` digunakan untuk JWT login dashboard admin.
-- `ADMIN_USERNAME` dan `ADMIN_PASSWORD` adalah credentials login administrator.
-- `SUPABASE_SECRET_KEY` harus menggunakan service role key dari Supabase.
 
 ## Menjalankan Aplikasi
 
@@ -96,58 +89,18 @@ Aplikasi akan berjalan di:
 http://localhost:3000
 ```
 
-### Production Build
-
-```bash
-npm run build
-npm run start
-```
-
-## Database Supabase
-
-Project ini menggunakan Supabase dan migration SQL yang ada di folder `supabase/migrations`.
-
-Untuk setup awal database:
-
-1. Buat project baru di Supabase
-2. Buka SQL Editor di Supabase
-3. Jalankan migration yang ada di folder `supabase/migrations` secara berurutan
-
-File migration awal:
-
-- `supabase/migrations/001_initial_schema.sql`
-- `supabase/migrations/002_seed_data.sql`
-
 ## Login Admin
 
-Setelah aplikasi berjalan, login menggunakan username dan password yang sudah Anda set pada variabel environment:
+Setelah aplikasi berjalan, login menggunakan username dan password yang sudah Anda set pada variabel environment (`.env`):
 
 - `ADMIN_USERNAME`
 - `ADMIN_PASSWORD`
 
 ## Catatan Penting
 
-- Semua akses database dilakukan melalui server-side service role Supabase.
+- Semua akses database dilakukan melalui backend secara langsung menggunakan `mysql2`.
 - Browser tidak langsung mengakses data sensitif.
-- Pastikan `.env.local` tidak ikut dipush ke GitHub untuk keamanan.
-
-## GitHub Setup
-
-Jika ingin push ke GitHub:
-
-```bash
-git init
-git add .
-git commit -m "Initial commit"
-git branch -M main
-git remote add origin <url-github-anda>
-git push -u origin main
-```
 
 ## Lisensi
 
-Project ini dibuat untuk kebutuhan internal PPM Roudlotul Jannah Surakarta.
-
-## Kontributor
-
-- Pengembang / Admin Project
+Project ini dibuat untuk kebutuhan internal.

@@ -44,10 +44,10 @@ export async function addOperator(nis: string, groupId: string) {
       `SELECT id, name, active FROM students WHERE nis = ? LIMIT 1`,
       [nis.trim()]
     );
-    if (studentRows.length === 0) throw new Error("NIS tidak ditemukan pada data santri.");
+    if (studentRows.length === 0) throw new Error("NIS tidak ditemukan pada data siswa.");
     
     const student = studentRows[0];
-    if (!student.active) throw new Error("Santri sudah tidak aktif dan tidak dapat menjadi petugas.");
+    if (!student.active) throw new Error("Siswa sudah tidak aktif dan tidak dapat menjadi petugas.");
 
     const [existingRows] = await connection.query<RowDataPacket[]>(
       `SELECT id, active FROM attendance_operators WHERE student_id = ? AND group_id = ? LIMIT 1`,

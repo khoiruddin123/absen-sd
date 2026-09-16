@@ -53,7 +53,7 @@ export function RecapContent() {
         <div>
           <p className="text-sm font-semibold text-ppm-gold-dark">Laporan</p>
           <h1 className="font-display text-2xl font-extrabold text-gray-800">
-            Rekapan Kehadiran Santri
+            Rekapan Kehadiran Siswa
           </h1>
         </div>
         <a href={exportUrl()}>

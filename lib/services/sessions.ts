@@ -25,7 +25,7 @@ export async function createSession(input: CreateSessionInput) {
 
     if (existing.length > 0) {
       throw new Error(
-        `Sesi ${input.sessionType} untuk tanggal ${input.sessionDate} sudah ada. Satu tanggal + jenis sesi hanya boleh memiliki satu sesi.`
+        `Sesi mata pelajaran "${input.sessionType}" untuk tanggal ${input.sessionDate} sudah pernah dibuka.`
       );
     }
 
